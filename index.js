@@ -63,7 +63,8 @@ app.post('/add-product', (req, res, next) => {
   console.log(url);
 })
 
-const port = 5000;
+// const port = 5000;
+const port = process.env.PORT;
 
 mongoose
   .connect(MONGODB_URI)
