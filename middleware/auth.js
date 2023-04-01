@@ -1,64 +1,67 @@
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 const { role } = require("./role");
 const User = require('../models/user');
+const { permission } = require('./permission');
 
-exports.authUser = (req, res, next) => {
-  if(!req.user) {
-    return res.status(401).send({ message: 'You need to sign in.' });
+exports.auth = (req, res, next) => {
+  const authHeader = req.get('Authorization');
+  const token = authHeader && authHeader.split(' ')[1];
+  console.log('token: ' + token);
+  if(!token) {
+    console.log('token no');
+    res.status(401).send({ message: 'Unauthorized.'});
   }
-  next();
-}
-
-exports.authRole = (role) => {
-  return (req, res, next) => {
-    console.log(req.user);
-    if(req.user.role !== role) {
-      return res.status(401).send({ message: 'Not allow.' })
+  jwt.verify(
+    token, 
+    process.env.YOUR_SECRET_KEY,
+    (err, user) => {
+      if(err) {
+        console.log('jwt no');
+        console.log(err);
+        res.status(401).send({ message: 'You need to login.'});
+      } else {
+        console.log('token ok');
+        console.log('user:');
+        console.log(user);
+        req.user = user;
+        next();
+      }
     }
-    next();
-  }
+  )
 }
 
-exports.authNotCustomer = () => {
+exports.permission = (route, can) => {
   return (req, res, next) => {
-    if(req.user.role === role.customer) {
-      return res.status(401).send({ message: 'Not allow.' })
-    }
-    next();
-  }
-}
-
-exports.permission = (permission) => {
-  return (req, res, next) => {
-    const { cookieId } = req.query;
-    console.log(cookieId)
-    User.findById(cookieId)
+    // const idUser = req.query.idUser ? req.query.idUser : req.user.id;
+    const idUser = req.user.id;
+    User.findById(idUser)
       .then(user => {
         if(!user) {
-          console.log('no')
-          return res.status(401).send({ message: 'You need to sign in!'});
+          console.log('no user');
+          res.status(401).send({ message: 'You need to sign in!' });
+        } else if(user) {
+          console.log(user.role)
+          console.log(permission[user.role])
+          const filteredUserPermission = permission[user.role].filter(i => i.route.includes(route))
+          console.log(filteredUserPermission);
+          if(!filteredUserPermission) {
+            console.log(permission[user.role]);
+            console.log('no permission role route');
+            res.status(401).send({ message: 'Not allow.' });
+          } 
+          else if(filteredUserPermission) {
+            console.log(filteredUserPermission[0].can.includes(can));
+            if(!filteredUserPermission[0].can.includes(can)) {
+              console.log('no permission role route can');
+              res.status(401).send({ message: 'Not allow.' });
+            } else {
+              console.log('permission ok');
+              next();
+            }
+          }
         }
-        // if(permission === role.counselor) {
-        //   if(user.role !== permission && user.role !== role.admin) {
-        //     console.log('no counselor')
-        //     return res.status(401).send({ message: 'Not allow.' })
-        //   }
-        // }
-        // if(permission === role.admin) {
-        //   if(user.role !== permission) {
-        //     console.log('no admin')
-        //     return res.status(401).send({ message: 'Not allow.' })
-        //   }
-        // } else {
-        //   next();
-        // }
-        // console.log('ok')
-        // next();
-        if(permission !== user.role && user.role !== role.admin) {
-          console.log('no');
-          return res.status(401).send({ message: 'Not allow.' });
-        } 
-        console.log('ok');
-        next();
       })
   }
 }

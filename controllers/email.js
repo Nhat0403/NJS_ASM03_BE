@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport(
 );
 
 exports.postEmail = (req, res, next) => {
-  const { cookieId, products, total, fullname, email, phone, address } = req.query;
+  const { idUser, products, total, fullname, email, phone, address } = req.query;
   const message = {
     to: email,
     from: 'nhatnpmFX19824@funix.edu.vn',
@@ -18,13 +18,8 @@ exports.postEmail = (req, res, next) => {
   transporter.sendMail(message)
     .then(res => {
       if(res) {
-        console.log('success');
+        console.log('send_email');
         console.log(res);
       }
     })
-
-  // return res.send('ok');
-  // // sendGrid.send(message)
-  // //   .then(res => console.log(res))
-  // //   .catch(err => console.log(err));
 }

@@ -22,7 +22,7 @@ exports.getProductById = (req, res, next) => {
 
 
 exports.searchProductByQuery = (req, res, next) => {
-  const { cookieId, searchQuery } = req.query;
+  const { idUser, searchQuery } = req.query;
   if(searchQuery.trim() === '') {
     Product.find()
       .then(product => res.status(200).send(product))
@@ -41,6 +41,6 @@ exports.searchProductByQuery = (req, res, next) => {
 }
 
 exports.postAddProduct = (req, res, next) => {
-  const { cookieId, category, img1, long_desc, name, price, short_desc } = req.body;
+  const { idUser, category, img1, long_desc, name, price, short_desc } = req.body;
   console.log(req.file);
 }

@@ -17,11 +17,13 @@ exports.getMessageByRoomId = (req, res, next) => {
 
 exports.createNewRoom = (req, res, next) => {
   const session = new Session({
-    content: [{
-      is_admin: false,
-      id: 0,
-      message: "==NEW ROOM=="
-    }]
+    content: [
+      {
+        is_admin: false,
+        id: 0,
+        message: "==NEW ROOM=="
+      }
+    ]
   });
   session.save();
   // io.getIO().emit('create_room', session);
@@ -29,20 +31,22 @@ exports.createNewRoom = (req, res, next) => {
 }
 
 exports.addMessage = (req, res, next) => {
-  const { message, roomId, cookieId } = req.query;
+  const { message, roomId, idUser } = req.query;
   console.log(roomId);
   // let is_admin = false;
-  User.findById(cookieId)
+  User.findById(idUser)
     .then(user => {
       is_admin = user.role === role.role.customer ? false : true;
       // console.log(user.role)
       Session.findByIdAndUpdate(
         roomId, 
-        { $push: 
-          { content: 
+        { 
+          $push: 
+          { 
+            content: 
             {
               is_admin: is_admin,
-              id: cookieId,
+              id: idUser,
               message: message
             }
           }
@@ -56,7 +60,7 @@ exports.addMessage = (req, res, next) => {
 }
 
 exports.searchMessage = (req, res, next) => {
-  const { cookieId, chatSearch } = req.query;
+  const { idUser, chatSearch } = req.query;
   Session.find()
     .then(message => {
       if(chatSearch.trim() === '') {
@@ -69,7 +73,7 @@ exports.searchMessage = (req, res, next) => {
 }
 
 exports.getAllRoom = (req, res, next) => {
-  const { cookieId } = req.query;
+  const { idUser } = req.query;
   Session.find()
     .then(message => res.status(200).send(message))
     .catch(err => console.log(err));

@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const { validationResult } = require('express-validator/check');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const User = require('../models/user');
 const Session = require('../models/session');
@@ -16,11 +18,26 @@ const transporter = nodemailer.createTransport(
   })
 );
 
+let token;
+const jwtSign = (userId, username) => {
+  token = jwt.sign(
+    {
+      id: userId,
+      username: username
+    }, 
+    process.env.YOUR_SECRET_KEY
+  )
+};
+
 exports.postLogin = (req, res, next) => {
   const { email, password } = req.query;
   const errors = validationResult(req);
 
   if(!errors.isEmpty()) {
+    // const error = new Error('Validation failed');
+    // error.statusCode = 422;
+    // error.data = errors.array();
+    // throw error;
     return res.status(422).send({ message: errors.array()[0].msg })
   }
 
@@ -39,11 +56,14 @@ exports.postLogin = (req, res, next) => {
             user.role === req.role ||
             user.role === role.admin
           ) {
-            // return res.status(200).send({ user: { ...user._doc, token }});
-            // return res.status(200).send({ ...user._doc, token: session._id });
+            jwtSign(user._id, user.username);
+            console.log(token);
+            user.token = token;
+            console.log(user.token);
+            user.save();
             return res.status(200).send(user);
           } else {
-            return res.status(422).send({ message: 'Not allow.'});
+            return res.status(401).send({ message: 'Not allow.'});
           }
         })
       })
@@ -55,7 +75,11 @@ exports.postSignup = (req, res, next) => {
   const errors = validationResult(req);
 
   if(!errors.isEmpty()) {
-    return res.status(422).send({ message: errors.array()[0].msg });
+    const error = new Error('Validation failed');
+    error.statusCode = 422;
+    error.data = errors.array();
+    throw error;
+    // return res.status(422).send({ message: errors.array()[0].msg });
   }
 
   bcrypt
@@ -69,6 +93,8 @@ exports.postSignup = (req, res, next) => {
         order: { items: [] },
         role: req.role,
       });
+      jwtSign(user._id, user.username);
+      user.token = token;
       user.save();
       return res.status(200).send(user);
     })
@@ -84,7 +110,7 @@ exports.getUserById = (req, res, next) => {
 }
 
 exports.getAllClients = (req, res, next) => {
-  const { cookieId } = req.query;
+  const { idUser } = req.query;
   User.find()
     .then(users => {
       const clients = users.filter(u => u.role === role.customer);

@@ -2,12 +2,12 @@ const Order = require('../models/order');
 const User = require('../models/user');
 
 exports.postOrder = (req, res, next) => {
-  const { cookieId, products, total, fullname, email, phone, address } = req.query;
+  const { idUser, products, total, fullname, email, phone, address } = req.query;
 
-  User.findById(cookieId)
+  User.findById(idUser)
     .then(user => {
       const order = new Order({
-        userId: cookieId,
+        userId: idUser,
         total: total,
         fullname: fullname,
         email: email,
@@ -19,15 +19,15 @@ exports.postOrder = (req, res, next) => {
       });
       order.products = user.cart.items;
       order.save();
-      // user.cart = [];
-      // user.save();
-      return res.status(200).send(order);
+      user.cart = [];
+      user.save();
+      // return res.status(200).send(order);
     })
     .catch(err => console.log(err));
 }
 
 exports.getAllOrders = (req, res, next) => {
-  const { cookieId } = req.query;
+  const { idUser } = req.query;
   Order.find()
     .sort({ updatedAt: -1 })
     .then(orders => {
@@ -45,7 +45,7 @@ exports.getAllOrders = (req, res, next) => {
 }
 
 exports.getOrderById = (req, res, next) => {
-  const { cookieId, orderId } = req.query;
+  const { idUser, orderId } = req.query;
   Order.findById(orderId)
     .then(order => res.status(200).send(order))
     .catch(err => console.log(err));

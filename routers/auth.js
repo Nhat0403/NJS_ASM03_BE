@@ -46,7 +46,7 @@ router.post(
   authController.postLogin);
 
 router.post(
-  '/login/counselor', 
+  '/counselor/login', 
   validateLogin, 
   setRole(role.counselor), 
   authController.postLogin
@@ -60,7 +60,7 @@ router.post(
 );
 
 router.post(
-  '/signup/counselor', 
+  '/counselor/signup', 
   validateSignUp, 
   setRole(role.counselor),
   authController.postSignup,

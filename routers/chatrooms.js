@@ -1,39 +1,15 @@
 const express = require('express');
-const { body, query } = require('express-validator/check');
 const router = express.Router();
 
 const chatRoomControllers = require('../controllers/chatrooms');
-const { permission } = require('../middleware/auth');
+const { permission, auth } = require('../middleware/auth');
 const { setRole, role } = require('../middleware/role');
 
-router.get(
-  '/getById',
-  [
-    query('roomId', 'No')
-      .trim()
-  ], 
-  chatRoomControllers.getMessageByRoomId);
-
-router.put(
-  '/addMessage', 
-  [
-    body('message')
-    .trim()
-  ],
-  permission(role.customer),
-  chatRoomControllers.addMessage
-);
-router.put(
-  '/addMessage/counselor', 
-  [
-    body('message')
-    .trim()
-  ],
-  permission(role.counselor),
-  chatRoomControllers.addMessage
-);
-router.post('/createNewRoom', chatRoomControllers.createNewRoom);
-router.post('/searchMessage', permission(role.counselor), chatRoomControllers.searchMessage);
-router.get('/getAllRoom', permission(role.counselor), chatRoomControllers.getAllRoom);
+router.get('/getById', chatRoomControllers.getMessageByRoomId);
+router.put('/addMessage', auth, permission('chatrooms', 'addMessage'), chatRoomControllers.addMessage);
+router.put('/counselor/addMessage', auth, permission('chatrooms', 'addMessage'), chatRoomControllers.addMessage);
+router.post('/createNewRoom', auth, permission('chatrooms', 'createNewRoom'), chatRoomControllers.createNewRoom);
+router.post('/counselor/searchMessage', auth, permission('chatrooms', 'searchMessage'), chatRoomControllers.searchMessage);
+router.get('/counselor/getAllRoom', auth, permission('chatrooms', 'getAllRoom'), chatRoomControllers.getAllRoom);
 
 module.exports = router;

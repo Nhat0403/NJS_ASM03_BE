@@ -52,17 +52,17 @@ app.get('/home',(req, res, next) => {
 app.use('/users', authRoutes);
 app.use('/products', productRoutes);
 app.use('/carts', cartRoutes);
-app.use('/orders', auth.permission(role.customer), orderRoutes);
-app.use('/email', auth.permission(role.customer), emailRoutes);
-app.use('/histories', auth.permission(role.customer), historiesRoutes);
+app.use('/orders', orderRoutes);
+app.use('/email', emailRoutes);
+app.use('/histories', historiesRoutes);
 app.use('/chatrooms', chatRoomRoutes);
-app.use('/admin', auth.permission(role.admin), adminRoutes);
+app.use('/admin', adminRoutes);
 
 app.post('/add-product', (req, res, next) => {
   const image = req.body;
   const url = req.file.path.replace("\\", "/");
   console.log(url);
-})
+});
 
 // const port = 5000;
 const port = process.env.PORT;
