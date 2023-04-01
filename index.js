@@ -67,14 +67,14 @@ app.get('/home',(req, res, next) => {
   res.send({message:'Hello'})
 })
 
-app.use('/users', authRoutes);
-app.use('/products', productRoutes);
-app.use('/carts', cartRoutes);
-app.use('/orders', orderRoutes);
-app.use('/email', emailRoutes);
-app.use('/histories', historiesRoutes);
-app.use('/chatrooms', chatRoomRoutes);
-app.use('/admin', adminRoutes);
+app.use('/users', cors(), authRoutes);
+app.use('/products', cors(), productRoutes);
+app.use('/carts', cors(), cartRoutes);
+app.use('/orders', cors(), orderRoutes);
+app.use('/email', cors(), emailRoutes);
+app.use('/histories', cors(), historiesRoutes);
+app.use('/chatrooms', cors(), chatRoomRoutes);
+app.use('/admin', cors(), adminRoutes);
 
 app.post('/add-product', (req, res, next) => {
   const image = req.body;
