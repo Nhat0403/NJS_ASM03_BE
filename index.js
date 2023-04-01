@@ -39,7 +39,8 @@ const storage = multer.diskStorage({
 });
 
 const corsOptions = {
-  origin: 'https://musical-kitsune-88e71e.netlify.app',
+  origin: '*',
+  credentials: true
 }
 
 app.use(cors(corsOptions));
