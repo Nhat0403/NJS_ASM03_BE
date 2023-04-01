@@ -39,12 +39,12 @@ const storage = multer.diskStorage({
 });
 
 const corsOptions = {
-  // origin: '*',
-  origin: [
-    'https://localhost:3000',
-    'https://localhost:3001',
-    'https://musical-kitsune-88e71e.netlify.app'
-  ],
+  origin: '*',
+  // origin: [
+  //   'https://localhost:3000',
+  //   'https://localhost:3001',
+  //   'https://musical-kitsune-88e71e.netlify.app'
+  // ],
   methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'DELETE'],
   credentials: true
 }
