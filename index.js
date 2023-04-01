@@ -38,13 +38,18 @@ const storage = multer.diskStorage({
   }
 });
 
-// const corsOptions = {
-//   origin: '*',
-//   credentials: true
-// }
+const corsOptions = {
+  // origin: '*',
+  origin: [
+    'https://localhost:3000',
+    'https://localhost:3001',
+    'https://musical-kitsune-88e71e.netlify.app'
+  ],
+  methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'DELETE'],
+  credentials: true
+}
+app.use(cors(corsOptions));
 
-// app.use(cors(corsOptions));
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false, limit: '500mb' }));
 // app.use(multer({ storage: storage }).array('images', 5));
