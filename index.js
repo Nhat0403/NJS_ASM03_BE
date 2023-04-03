@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const http = require('http');
+const serverless = require('serverless-http')
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -67,14 +69,14 @@ app.get('/home',(req, res, next) => {
   res.send({message:'Hello'})
 })
 
-app.use('/users', cors(), authRoutes);
-app.use('/products', cors(), productRoutes);
-app.use('/carts', cors(), cartRoutes);
-app.use('/orders', cors(), orderRoutes);
-app.use('/email', cors(), emailRoutes);
-app.use('/histories', cors(), historiesRoutes);
-app.use('/chatrooms', cors(), chatRoomRoutes);
-app.use('/admin', cors(), adminRoutes);
+app.use('/users', authRoutes);
+app.use('/products', productRoutes);
+app.use('/carts', cartRoutes);
+app.use('/orders', orderRoutes);
+app.use('/email', emailRoutes);
+app.use('/histories', historiesRoutes);
+app.use('/chatrooms', chatRoomRoutes);
+app.use('/admin', adminRoutes);
 
 app.post('/add-product', (req, res, next) => {
   const image = req.body;
@@ -84,6 +86,7 @@ app.post('/add-product', (req, res, next) => {
 
 // const port = 5000;
 const port = process.env.PORT;
+// const server = http.createServer(app);
 
 mongoose
   .connect(MONGODB_URI)
@@ -93,6 +96,7 @@ mongoose
     // io.on('connection', socket => {
     //   console.log('Listening to port ' + port);
     // })
+
     app.listen(port);
     console.log('Listening to port ' + port);
   })
@@ -102,4 +106,6 @@ mongoose
   // script 
   // "start-server": "node app.js"
 
-export default app;
+// export default app;
+
+module.exports.handler = serverless(app);
