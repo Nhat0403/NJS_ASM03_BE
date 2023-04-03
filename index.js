@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
-const serverless = require('serverless-http')
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -40,35 +39,21 @@ const storage = multer.diskStorage({
   }
 });
 
-// const corsOptions = {
-//   origin: '*',
-//   origin: [
-//     'https://localhost:3000',
-//     'https://localhost:3001',
-//     'https://musical-kitsune-88e71e.netlify.app'
-//   ],
-//   methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'DELETE'],
-//   credentials: true
-// }
-// app.use(cors(corsOptions));
+const corsOptions = {
+  origin: [
+    'https://localhost:3000',
+    'https://localhost:3001',
+    'https://musical-kitsune-88e71e.netlify.app'
+  ],
+  methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'DELETE'],
+  credentials: true
+}
+app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false, limit: '500mb' }));
-// app.use(multer({ storage: storage }).array('images', 5));
+app.use(express.urlencoded({ extended: false }));
 app.use(multer({ storage: storage }).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  if ('OPTIONS' == req.method) {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
 
 app.get('/home',(req, res, next) => {
   res.send({message:'Hello'})
@@ -91,7 +76,6 @@ app.post('/add-product', (req, res, next) => {
 
 // const port = 5000;
 const port = process.env.PORT;
-// const server = http.createServer(app);
 
 mongoose
   .connect(MONGODB_URI)
@@ -111,5 +95,4 @@ mongoose
   // script 
   // "start-server": "node app.js"
 
-// export default app;
 module.exports = app;
