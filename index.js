@@ -40,7 +40,10 @@ const storage = multer.diskStorage({
 });
 
 const corsOptions = {
-  origin: "https://jolly-kashata-7febbe.netlify.app",
+  origin: [
+    "https://jolly-kashata-7febbe.netlify.app",
+    "http://localhost:3000"
+  ],
   optionsSuccessStatus: 200, // For legacy browser support
   methods: ["GET", "POST", "PUT", "DELETE"]
 };
