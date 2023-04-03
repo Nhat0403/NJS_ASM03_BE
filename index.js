@@ -107,5 +107,4 @@ mongoose
   // "start-server": "node app.js"
 
 // export default app;
-
-module.exports.handler = serverless(app);
+module.exports = app;
