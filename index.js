@@ -18,9 +18,6 @@ const historiesRoutes = require('./routers/histories');
 const chatRoomRoutes = require('./routers/chatrooms');
 const adminRoutes = require('./routers/admin');
 
-const auth = require('./middleware/auth');
-const { role } = require('./middleware/role');
-
 const MONGODB_URI = 'mongodb+srv://nhat:F0zwwyPdfQ9lumQw@cluster0.gmbddls.mongodb.net/E-commerce?retryWrites=true'
 
 const app = express();
@@ -45,7 +42,7 @@ const corsOptions = {
   //   "http://localhost:3000"
   // ],
   origin: "*",
-  optionsSuccessStatus: 200, // For legacy browser support
+  optionsSuccessStatus: 200,
   methods: ["GET", "POST", "PUT", "DELETE"]
 };
 app.use(cors(corsOptions));
@@ -68,11 +65,11 @@ app.use('/histories', historiesRoutes);
 app.use('/chatrooms', chatRoomRoutes);
 app.use('/admin', adminRoutes);
 
-app.post('/add-product', (req, res, next) => {
-  const image = req.body;
-  const url = req.file.path.replace("\\", "/");
-  console.log(url);
-});
+// app.post('/add-product', (req, res, next) => {
+//   const image = req.body;
+//   const url = req.file.path.replace("\\", "/");
+//   console.log(url);
+// });
 
 // const port = 5000;
 const port = process.env.PORT;
@@ -90,9 +87,5 @@ mongoose
     console.log('Listening to port ' + port);
   })
   .catch(err => console.log(err));
-
-  // package.json 
-  // script 
-  // "start-server": "node app.js"
 
 module.exports = app;
