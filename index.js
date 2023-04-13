@@ -42,7 +42,7 @@ const corsOptions = {
   //   "https://jolly-kashata-7febbe.netlify.app",
   //   "http://localhost:3000"
   // ],
-  origin: "https://nhat0403-deploy-vercel.vercel.app/",
+  origin: "*",
   optionsSuccessStatus: 200,
   methods: ["GET", "POST", "PUT", "DELETE"]
 };
