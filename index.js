@@ -41,7 +41,7 @@ const corsOptions = {
   //   "https://jolly-kashata-7febbe.netlify.app",
   //   "http://localhost:3000"
   // ],
-  origin: "*",
+  origin: "https://nhat0403-deploy-vercel.vercel.app/",
   optionsSuccessStatus: 200,
   methods: ["GET", "POST", "PUT", "DELETE"]
 };
@@ -72,7 +72,7 @@ app.use('/admin', adminRoutes);
 // });
 
 // const port = 5000;
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 
 mongoose
   .connect(MONGODB_URI)
