@@ -46,7 +46,14 @@ const corsOptions = {
   optionsSuccessStatus: 200,
   methods: ["GET", "POST", "PUT", "DELETE"]
 };
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -55,7 +62,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.get('/home',(req, res, next) => {
   res.send({message:'Hello'})
-})
+});
 
 app.use('/users', authRoutes);
 app.use('/products', productRoutes);
