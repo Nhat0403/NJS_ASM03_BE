@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const http = require('http');
+const https = require('https');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -21,6 +21,7 @@ const adminRoutes = require('./routers/admin');
 const MONGODB_URI = 'mongodb+srv://nhat:F0zwwyPdfQ9lumQw@cluster0.gmbddls.mongodb.net/E-commerce?retryWrites=true'
 
 const app = express();
+https.createServer(app);
 
 const store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -83,7 +84,8 @@ mongoose
     //   console.log('Listening to port ' + port);
     // })
 
-    app.listen(port);
+    // app.listen(port);
+    https.listen(port);
     console.log('Listening to port ' + port);
   })
   .catch(err => console.log(err));
