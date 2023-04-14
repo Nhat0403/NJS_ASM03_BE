@@ -37,22 +37,16 @@ const storage = multer.diskStorage({
   }
 });
 
-app.enable('trust proxy');
-
-const corsOptions = {
-  origin: [
-    "https://musical-kitsune-88e71e.netlify.app/",
-    "https://nhat0403-deploy-vercel.vercel.app/",
-    "http://localhost:3000"
-  ]
-};
-app.use(cors(corsOptions));
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
+const allowList = [
+  "https://musical-kitsune-88e71e.netlify.app/",
+  "https://nhat0403-deploy-vercel.vercel.app/",
+  "http://localhost:3000"
+];
+const corsOptionsDelegate = (req, callback) => {
+  const corsOptions = allowList.indexOf(req.header('Origin')) !== -1 ? { origin: true } : { origin: false };
+  callback(null, corsOptions);
+}
+app.use(cors(corsOptionsDelegate));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
