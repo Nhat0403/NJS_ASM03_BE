@@ -44,8 +44,7 @@ const corsOptions = {
     "https://musical-kitsune-88e71e.netlify.app/",
     "https://nhat0403-deploy-vercel.vercel.app/",
     "http://localhost:3000"
-  ],
-  credentials: true
+  ]
 };
 app.use(cors(corsOptions));
 
