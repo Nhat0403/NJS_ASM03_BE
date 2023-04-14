@@ -43,9 +43,8 @@ const allowList = [
   "http://localhost:3000"
 ];
 app.use(cors({
-  origin: allowList,
+  origin: '*',
   methods: 'GET, PUT, PATCH, POST, DELETE',
-  preflightContinue: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
