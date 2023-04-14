@@ -42,11 +42,12 @@ const allowList = [
   "https://nhat0403-deploy-vercel.vercel.app/",
   "http://localhost:3000"
 ];
-const corsOptionsDelegate = (req, callback) => {
-  const corsOptions = allowList.indexOf(req.header('Origin')) !== -1 ? { origin: true } : { origin: false };
-  callback(null, corsOptions);
-}
-app.use(cors(corsOptionsDelegate));
+app.use(cors({
+  origin: allowList,
+  methods: 'GET, PUT, PATCH, POST, DELETE',
+  preflightContinue: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
