@@ -37,22 +37,21 @@ const storage = multer.diskStorage({
   }
 });
 
+app.enable('trust proxy');
+
 const corsOptions = {
-  // origin: [
-  //   "https://jolly-kashata-7febbe.netlify.app",
-  //   "http://localhost:3000"
-  // ],
-  origin: "*",
-  optionsSuccessStatus: 200,
-  methods: ["GET", "POST", "PUT", "DELETE"]
+  origin: [
+    "https://musical-kitsune-88e71e.netlify.app/",
+    "https://nhat0403-deploy-vercel.vercel.app/",
+    "http://localhost:3000"
+  ],
+  credentials: true
 };
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000/');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Access-Control-Allow-Headers, Origin, Accept');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
 
