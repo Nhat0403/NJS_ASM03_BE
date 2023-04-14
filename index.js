@@ -43,9 +43,10 @@ const allowList = [
   "http://localhost:3000"
 ];
 app.use(cors({
-  origin: '*',
+  origin: 'https://nhat0403-deploy-vercel.vercel.app/',
   methods: 'GET, PUT, PATCH, POST, DELETE',
-  allowedHeaders: ['Content-Type', 'Authorization']
+  headers: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 app.use(express.json());
