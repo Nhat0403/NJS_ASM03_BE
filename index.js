@@ -47,7 +47,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.enable('trust proxy');
+app.set('trust proxy', true);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
