@@ -44,8 +44,6 @@ const allowList = [
 ];
 app.use(cors({
   origin: 'https://nhat0403-deploy-vercel.vercel.app/',
-  methods: 'GET, PUT, PATCH, POST, DELETE',
-  headers: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
@@ -57,7 +55,7 @@ app.use(multer({ storage: storage }).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.get('/home',(req, res, next) => {
-  res.send({message:'Hello'})
+  res.send({ message:'Hello' })
 });
 
 app.use('/users', authRoutes);
