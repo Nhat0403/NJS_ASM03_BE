@@ -42,10 +42,17 @@ const allowList = [
   "https://nhat0403-deploy-vercel.vercel.app/",
   "http://localhost:3000"
 ];
-app.use(cors({
-  origin: 'https://nhat0403-deploy-vercel.vercel.app/',
-  credentials: true
-}));
+
+// app.use(cors({
+//   origin: 'https://nhat0403-deploy-vercel.vercel.app/',
+//   credentials: true
+// }));
+
+app.use('/', (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://nhat0403-deploy-vercel.vercel.app/");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+  next();
+});
 
 app.set('trust proxy', true);
 
