@@ -43,7 +43,7 @@ const allowList = [
   "http://localhost:3000"
 ];
 app.use(cors({
-  origin: 'https://nhat0403-deploy-vercel.vercel.app/',
+  origin: 'https://musical-kitsune-88e71e.netlify.app/',
   credentials: true
 }));
 
@@ -55,7 +55,7 @@ app.use(multer({ storage: storage }).single('image'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.get('/home',(req, res, next) => {
-  res.send({ message:'Hello' })
+  res.send({ message:'newone' })
 });
 
 app.use('/users', authRoutes);
