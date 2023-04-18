@@ -43,7 +43,7 @@ const allowList = [
   "http://localhost:3000"
 ];
 app.use(cors({
-  origin: 'https://musical-kitsune-88e71e.netlify.app/',
+  origin: 'https://nhat0403-deploy-vercel.vercel.app/',
   credentials: true
 }));
 
