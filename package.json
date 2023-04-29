@@ -20,6 +20,8 @@
     "mongodb": "^5.0.0",
     "mongoimport": "^1.0.6",
     "mongoose": "^6.9.0",
+    "netlify-cli": "^14.3.1",
+    "netlify-lambda": "^2.0.16",
     "nodemailer": "^6.9.1",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "nodemon": "^2.0.20",
@@ -34,7 +36,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "netlify deploy --prod"
   },
   "keywords": [],
   "author": "",
